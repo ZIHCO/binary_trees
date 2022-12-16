@@ -8,61 +8,32 @@
 
 int binary_tree_is_full(const binary_tree_t *tree)
 {
-	size_t height = binary_tree_height(tree);
-	size_t leaves = binary_tree_leaves(tree);
-	size_t power = 1;
-	size_t i = 0;
+	size_t one_leaf_node = binary_tree_node1(tree);
 
 	if (tree)
 	{
-		while (i < height)
-		{
-			power *= 2;
-			i++;
-		}
-		if (power == leaves)
-			return (1);
-		return (0);
+		if (one_leaf_node)
+			return (0);
+		return (1);
 	}
 	return (0);
 }
 
 /**
- * binary_tree_height - measures the height of a binary tree
+ * binary_tree_node1 - count node with at most a leave of a binary tree
  * @tree: a pointer the the root node to be measured
  * Return: a non negative number
  */
 
-size_t binary_tree_height(const binary_tree_t *tree)
-{
-	size_t left_height, right_height;
-
-	if (!tree || (!tree->right && !tree->left))
-		return (0);
-
-	left_height = binary_tree_height(tree->left);
-	right_height = binary_tree_height(tree->right);
-
-	if (left_height >= right_height)
-		return (left_height + 1);
-	return (right_height + 1);
-}
-
-/**
- * binary_tree_leaves - measures the leaves of a binary tree
- * @tree: a pointer the the root node to be measured
- * Return: a non negative number
- */
-
-size_t binary_tree_leaves(const binary_tree_t *tree)
+size_t binary_tree_node1(const binary_tree_t *tree)
 {
 	size_t size;
 
 	if (!tree)
 		return (0);
 
-	size = binary_tree_leaves(tree->left) + binary_tree_leaves(tree->right);
-	if (!tree->left && !tree->right)
+	size = binary_tree_node1(tree->left) + binary_tree_node1(tree->right);
+	if ((tree->left || tree->right) && !(tree->left && tree->right))
 		return (size + 1);
 	return (size);
 }
